@@ -12,9 +12,35 @@ import furhatos.nlu.common.Yes
 
 val General: State = state {
     onEntry {
-        furhat.ask("Is there anything else I can help you with?")
+        furhat.ask{
+            random {
+                +"Is there anything else I can help you with?"
+                +"Do you have any other questions?"
+                +"Anything else I can do for you?"
+                +"Before we wrap up, is there anything else I can assist you with?"
+            }
+        }
     }
 
-    
+    onResponse<Yes> {
+        goto(FollowUpQuestion) // Transition to MasterSelection
+    }
+
+    onResponse<No> {
+        furhat.say("Okay, happy to have been of assistance")
+        goto(Idle)
+    }
+}
+
+val FollowUpQuestion: State = state {
+    onEntry {
+        furhat.ask{
+            random {
+                +"What is your question?"
+                +"What else can I help you with?"
+            }
+        }
+    }
+
 
 }
