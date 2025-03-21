@@ -10,7 +10,7 @@ import furhatos.nlu.common.Yes
 
 val Greeting: State = state(Parent) {
     onEntry {
-        furhat.say("Hello! My name is Matty, I will help you today finding your master's program")
+        furhat.say("Hello! My name is Matty, I can help you finding your master's program")
         furhat.ask("Do you want help choosing your master's?")
     }
 
