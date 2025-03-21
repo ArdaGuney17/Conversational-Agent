@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Conversational-Agent.iml" filepath="$PROJECT_DIR$/.idea/Conversational-Agent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MasterFinder.iml" filepath="$PROJECT_DIR$/.idea/modules/MasterFinder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MasterFinder.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MasterFinder.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MasterFinder.test.iml" filepath="$PROJECT_DIR$/.idea/modules/MasterFinder.test.iml" />
     </modules>
   </component>
 </project>
