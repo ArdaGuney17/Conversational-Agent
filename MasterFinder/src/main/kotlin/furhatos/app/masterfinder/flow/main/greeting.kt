@@ -29,7 +29,6 @@ val Greeting: State = state(Parent) {
 
     onResponse<No> {
         furhat.say("No worries! Thank you for this short conversation")
-        goto(MasterSelection) // Now transitions to the MasterSelection state
     }
 
 }
