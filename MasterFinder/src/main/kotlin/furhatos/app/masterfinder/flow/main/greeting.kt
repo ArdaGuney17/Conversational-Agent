@@ -10,18 +10,31 @@ import furhatos.nlu.common.Yes
 
 val Greeting: State = state(Parent) {
     onEntry {
-        furhat.say("Hello! My name is Matty, I will help you today finding your masters program?")
+        furhat.say("Hello! My name is Matty, I will help you today finding your masters program")
+        furhat.ask("Do you want help choosing your masters?")
+    }
+
+    onResponse<Yes> {
+        furhat.ask("Great!")
+    }
+
+    onResponse<No> {
+        furhat.say("No worries! Thank you for this short conversation")
+        goto(MasterSelection) // Now transitions to the MasterSelection state
+    }
+
+    onResponse<Yes> {
         furhat.ask("Do you already have something in mind?")
     }
 
     onResponse<Yes> {
-        furhat.say("Hello World! ")
+        goto(MasterSelection) // Now transitions to the MasterSelection state
     }
 
     onResponse<No> {
-        furhat.say("No worries! I can help you explore available master's programs at the University of Twente.")
-        goto(MasterSelection) // Now transitions to the MasterSelection state
+        goto(MasterSelection) // Change for Bachelor class
     }
+
 
 
 }
