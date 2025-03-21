@@ -19,10 +19,12 @@ val Greeting: State = state(Parent) {
         furhat.ask("Do you already have something in mind?")
 
         onResponse<Yes> {
+            furhat.say("Good to hear!")
             goto(MasterSelection) // User has something in mind
         }
 
         onResponse<No> {
+            furhat.say("That is okay")
             goto(MasterSelection) // Change to bachelor
         }
     }
