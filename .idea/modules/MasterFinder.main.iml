@@ -41,7 +41,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../MasterFinder/src/main/kotlin" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../MasterFinder/src/main/resources" type="java-resource" />
     </content>
-    <orderEntry type="jdk" jdkName="23" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: com.furhatrobotics.furhatos:furhat-commons:2.8.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21" level="project" />
