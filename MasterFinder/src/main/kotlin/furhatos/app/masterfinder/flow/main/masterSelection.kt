@@ -1,10 +1,9 @@
 package furhatos.app.masterfinder.flow.main
 
-import furhatos.app.masterfinder.flow.parent.kt
+import furhatos.app.masterfinder.flow.Parent
 import furhatos.flow.kotlin.*
 import furhatos.nlu.*
 import furhatos.nlu.common.*
-import javafx.scene.Parent
 
 // Define custom intents
 class MasterName(val name: String? = null) : Intent()
@@ -12,7 +11,7 @@ class AdmissionRequest : Intent()
 class CareerRequest : Intent()
 class StructureRequest : Intent()
 
-val MasterSelection: Thread.State = state(Parent) {
+val MasterSelection: State = state(Parent) {
 
     onEntry {
         furhat.say("I can help you find information about a master's program at the University of Twente.")
