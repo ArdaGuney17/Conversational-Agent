@@ -7,6 +7,7 @@ import furhatos.flow.kotlin.state
 
 val Idle: State = state {
     onEntry {
+        furhat.say("Goodbye")
         furhat.attendNobody()
     }
 
