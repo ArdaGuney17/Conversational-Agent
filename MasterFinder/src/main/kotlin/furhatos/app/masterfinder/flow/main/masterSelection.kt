@@ -1,99 +1,121 @@
 package furhatos.app.masterfinder.flow.main
 
-class masterSelection {
-    val mastersSelection = listOf(
-        MasterProgram(
-            "Shaping Responsible Futures",
-            "Engineering Technology",
-            "September",
-            true,
-            "English",
-            false,
-            "Transdisciplinary approach with real-world projects",
-            "Open for students with various backgrounds, motivation letter required",
-            "Focuses on leadership and innovation in tackling global challenges"
-        ),
-        MasterProgram(
-            "Applied Mathematics",
-            "Electrical Engineering, Mathematics and Computer Science",
-            "September, February",
-            true,
-            "English",
-            false,
-            "Two-year program specializing in mathematical modeling, data science, and optimization",
-            "Requires a strong background in mathematics and/or computer science",
-            "Opportunities in academia, finance, healthcare, logistics, and engineering"
-        ),
-        MasterProgram(
-            "Applied Physics",
-            "Technical Sciences",
-            "September, February",
-            true,
-            "English",
-            false,
-            "Two-year research-based program exploring physics applications in various industries",
-            "Requires a Bachelor in Physics or related field",
-            "Careers in research, high-tech industry, and academia"
-        )
-    )
+import furhatos.app.masterfinder.flow.Parent
+import furhatos.flow.kotlin.*
+import furhatos.nlu.*
+import furhatos.nlu.common.*
 
-    // Furhat Skill
-    class MasterFinderSkill : Skill() {
-        override fun start() {
-            Flow().run(Init)
+// Define custom intents
+class MasterName(val name: String? = null) : Intent()
+class AdmissionRequest : Intent()
+class CareerRequest : Intent()
+class StructureRequest : Intent()
+
+val MasterSelection: State = state(Parent) {
+
+    onEntry {
+        furhat.say("I can help you find information about a master's program at the University of Twente.")
+        furhat.ask("Which master's program are you interested in?")
+    }
+
+    onResponse<MasterName> { response ->
+        val master = masterPrograms.find { it.name.equals(response.intent.name, ignoreCase = true) }
+
+        if (master != null) {
+            furhat.say("Great! The ${master.name} program is a ${master.duration} year program. It is taught in ${master.language} and is part of the ${master.faculty}.")
+            goto(MasterDetails(master))
+        } else {
+            furhat.say("I’m sorry, I couldn’t find that master’s program. Could you try again?")
+            reentry()
         }
     }
 
-    // Flow for starting the conversation
-    val Init: State = state {
-        onEntry {
-            furhat.say("Hello! I can help you find information about master's programs at the University of Twente. Which master's are you interested in?")
-            goto(SelectMaster)
-        }
+    onResponse<No> {
+        furhat.say("Alright, let me know if you need any other assistance.")
+        goto(Parent)
     }
-
-    // Flow for selecting a master's program
-    val SelectMaster: State = state {
-        onResponse<MasterName> {
-            val master = masters.find { it.name.equals(it.text, ignoreCase = true) }
-            if (master != null) {
-                furhat.say("The ${master.name} program is part of the ${master.faculty} faculty. Would you like to know about admission requirements, career prospects, or structure?")
-                goto(MasterDetails(master))
-            } else {
-                furhat.say("I couldn't find that master's program. Please try again.")
-                reentry()
-            }
-        }
-    }
-
-    // Flow for retrieving specific details
-    fun MasterDetails(master: MasterProgram) = state {
-        onResponse<AdmissionQuery> {
-            furhat.say("The admission requirements for ${master.name} are: ${master.admissionRequirements}.")
-            goto(ContinueOrEnd)
-        }
-        onResponse<CareerQuery> {
-            furhat.say("Graduates of ${master.name} can pursue careers in: ${master.careerProspects}.")
-            goto(ContinueOrEnd)
-        }
-        onResponse<StructureQuery> {
-            furhat.say("The structure of ${master.name} is: ${master.structure}.")
-            goto(ContinueOrEnd)
-        }
-    }
-
-    // Flow to continue or end the conversation
-    val ContinueOrEnd: State = state {
-        onEntry {
-            furhat.ask("Would you like to ask about another master's program?")
-        }
-        onResponse<Yes> {
-            goto(SelectMaster)
-        }
-        onResponse<No> {
-            furhat.say("Alright! Good luck with your decision!")
-            goto(Idle)
-        }
-    }
-
 }
+
+fun MasterDetails(master: MasterProgram): State = state {
+
+    onEntry {
+        furhat.ask("Would you like to know about the admission requirements, career opportunities, or the study structure for ${master.name}?")
+    }
+
+    onResponse<AdmissionRequest> {
+        furhat.say("For ${master.name}, the admission requirements include: ${master.admission}.")
+        goto(ContinueOrEnd)
+    }
+
+    onResponse<CareerRequest> {
+        furhat.say("Graduates of ${master.name} often pursue careers in ${master.careerProspects}.")
+        goto(ContinueOrEnd)
+    }
+
+    onResponse<StructureRequest> {
+        furhat.say("${master.name} is structured as follows: ${master.structure}.")
+        goto(ContinueOrEnd)
+    }
+
+    onResponse<No> {
+        furhat.say("Alright, let me know if you have any other questions!")
+        goto(Parent)
+    }
+}
+
+val ContinueOrEnd: State = state {
+    onEntry {
+        furhat.ask("Would you like to ask about another master's program?")
+    }
+
+    onResponse<Yes> {
+        goto(MasterSelection)
+    }
+
+    onResponse<No> {
+        furhat.say("Alright, have a great day!")
+        goto(Parent)
+    }
+}
+
+/** Data Model for Master's Programs */
+data class MasterProgram(
+    val name: String,
+    val duration: String,
+    val language: String,
+    val faculty: String,
+    val admission: String,
+    val careerProspects: String,
+    val structure: String
+)
+
+/** List of Available Masters */
+val masterPrograms = listOf(
+    MasterProgram(
+        name = "Applied Mathematics",
+        duration = "2",
+        language = "English",
+        faculty = "Electrical Engineering, Mathematics and Computer Science",
+        admission = "A relevant bachelor's degree, sufficient English proficiency.",
+        careerProspects = "Data Science, Research, Engineering, Finance.",
+        structure = "Includes mathematical modeling, computational science, and data analytics."
+    ),
+    MasterProgram(
+        name = "Applied Physics",
+        duration = "2",
+        language = "English",
+        faculty = "Technical Physics",
+        admission = "Physics or engineering background, sufficient mathematics knowledge.",
+        careerProspects = "R&D, Engineering, Academia, High-tech industry.",
+        structure = "Specializations in nanotechnology, quantum physics, and fluid dynamics."
+    ),
+    MasterProgram(
+        name = "Shaping Responsible Futures",
+        duration = "1",
+        language = "English",
+        faculty = "Transdisciplinary Master-Insert",
+        admission = "Any discipline, motivation for transdisciplinary research.",
+        careerProspects = "Policy Making, Social Innovation, Systemic Change Consulting.",
+        structure = "Includes real-world challenges, collaboration with stakeholders, and self-directed learning."
+    )
+)
