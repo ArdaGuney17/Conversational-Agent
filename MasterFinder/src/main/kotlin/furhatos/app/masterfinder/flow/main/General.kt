@@ -74,5 +74,10 @@ val FollowUpQuestion: State = state {
         goto(MasterSelection) //change to requirements
     }
 
+    // Handle unrecognized responses
+    onResponse {
+        goto(Sorry) // Transition to Error state
+    }
+
 
 }
