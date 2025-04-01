@@ -38,7 +38,7 @@ val AskIfSomethingInMind: State = state(Parent) {
 
     onResponse<No> {
         furhat.say("That is okay.")
-        goto(MasterSelection) // Transition to MasterSelection (or another state if needed)
+        goto(BachelorSelection) // Transition to BachelorSelection (or another state if needed)
     }
 }
 
