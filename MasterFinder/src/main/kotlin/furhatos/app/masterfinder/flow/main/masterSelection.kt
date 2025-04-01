@@ -6,8 +6,6 @@ import furhatos.flow.kotlin.*
 import furhatos.nlu.*
 import furhatos.nlu.common.*
 import furhatos.util.Language
-import java.util.List
-import java.util.function.Consumer
 
 // Define custom intents
 
@@ -112,6 +110,36 @@ val ChoiceMastersFromBachelor: State = state {
     onResponse {
         furhat.say("You did not answer any of the proposed masters")
         goto(General)
+    }
+}
+
+fun findMatchingMastersByInterest(userInterests: kotlin.collections.List<String?>): kotlin.collections.List<MasterProgram> {
+    return masterPrograms.filter { master ->
+        userInterests.any { interest ->
+            interest?.let { master.name.contains(it, ignoreCase = true) } == true ||
+                    interest?.let { master.faculty.contains(it, ignoreCase = true) } == true||
+                    interest?.let { master.admission.contains(it, ignoreCase = true) } == true||
+                    interest?.let { master.careerProspects.contains(it, ignoreCase = true) } == true||
+                    interest?.let { master.structure.contains(it, ignoreCase = true) } == true
+        }
+    }
+}
+
+val InterestBasedMasterSelection: State = state {
+    onEntry {
+        val userInterest = UserData.userInterests // This should be a single interest or list of interests
+        println("User selected interests: $userInterest")
+
+        val matchingMasters = findMatchingMastersByInterest(listOf(userInterest)) // Convert to list if single value
+
+        if (matchingMasters.isNotEmpty()) {
+            masterNames = matchingMasters.map { it.name }
+            furhat.say("Based on your interests in $userInterest, you might be interested in these Master's programs: $masterNames.")
+            goto(KnowMoreAboutMaster)
+        } else {
+            furhat.say("I couldn't find a direct match for your interests in our Master's programs. You may want to explore options on the UT website.")
+            goto(General)
+        }
     }
 }
 
