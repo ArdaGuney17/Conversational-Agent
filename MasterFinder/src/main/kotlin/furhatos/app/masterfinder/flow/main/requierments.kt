@@ -1,17 +1,18 @@
-package furhatos.app.masterfinder.flow.main
+/*package furhatos.app.masterfinder.flow.main
 
 import furhatos.app.masterfinder.flow.Parent
 import furhatos.flow.kotlin.*
 import furhatos.nlu.common.*
 import furhatos.util.Language
 
+    val euDeadline = "July 1st"
+    val nonEuDeadline = "May 1st"
+    val requiredGpa = "7.0 Dutch scale"
+    val englishTests = "IELTS 6.5 or TOEFL 90"
+
+
+
 val MasterRequirements: State = state(Parent) {
-    init {
-        val euDeadline = "July 1st"
-        val nonEuDeadline = "May 1st"
-        val requiredGpa = "7.0 Dutch scale"
-        val englishTests = "IELTS 6.5 or TOEFL 90"
-    }
 
     onEntry {
         furhat.say("Let me help you with the University of Twente Master's application!")
@@ -211,3 +212,4 @@ val Goodbye: State = state {
         terminate()
     }
 }
+*/
