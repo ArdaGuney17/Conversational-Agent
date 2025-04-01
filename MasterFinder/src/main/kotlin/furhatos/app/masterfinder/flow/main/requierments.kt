@@ -1,4 +1,6 @@
 import furhatos.app.masterfinder.flow.Parent
+import furhatos.app.masterfinder.flow.main.Ethnicity
+import furhatos.app.masterfinder.flow.main.General
 import furhatos.flow.kotlin.*
 import furhatos.nlu.common.*
 
@@ -26,17 +28,17 @@ val Requierements: State = state(Parent) {
         }
     }
 
-    onResponse<Dutch> {
+    onResponse<Ethnicity> {
         furhat.say("As a Dutch citizen, for a September intake, you can apply from 1 October with a deadline before 1 August. For a February intake, applications open on 1 March with a deadline before 1 January.")
         goto(General)
     }
 
-    onResponse<EEA> {
+    onResponse<Ethnicity> {
         furhat.say("As a citizen of another EEA country, for a September intake, you can apply from 1 October with a deadline before 1 July. For a February intake, applications open on 1 March with a deadline before 1 December.")
         goto(General)
     }
 
-    onResponse<NonEEA> {
+    onResponse<Ethnicity> {
         furhat.say("As a non-EEA citizen, for a September intake, you can apply from 1 October with a deadline before 1 May. For a February intake, applications open on 1 March with a deadline before 1 October.")
         goto(General)
     }

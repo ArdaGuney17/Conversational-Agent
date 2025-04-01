@@ -112,3 +112,7 @@ class MasterCourses: Intent() {
         println("User is studying: ${UserData.userOptionalMaster}")
     }
 }
+
+class Ethnicity : Intent() {
+    val ethnicity = listOf("Dutch","EEA","NonEEA")
+}

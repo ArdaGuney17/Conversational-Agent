@@ -1,5 +1,6 @@
 package furhatos.app.masterfinder.flow.main
 
+import Requierements
 import furhatos.app.masterfinder.flow.Parent
 import furhatos.flow.kotlin.*
 import furhatos.nlu.*
@@ -64,7 +65,7 @@ val MasterInformation: State = state(Parent){
         if (master != null) {
             furhat.say("For ${master.name}, the admission requirements include: ${master.admission}.")
         }
-        goto(MasterSelection)
+        goto(Requierements)
     }
 
     onResponse<CareerRequest> {
