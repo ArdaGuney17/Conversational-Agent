@@ -39,6 +39,31 @@ class CareerRequest : Intent() {
     }
 }
 
+class FacultyRequest : Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+                "Which faculty offers this program?",
+                "What faculty is this master's program part of?",
+                "Tell me about the faculty for this program",
+                "Who teaches this program?",
+                "Which department is responsible for this master's?"
+        )
+    }
+}
+
+class DurationRequest : Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+                "How long does the program take?",
+                "What is the duration of this master's?",
+                "How many years does it take to complete?",
+                "How long will it take to finish the program?",
+                "What is the standard length of the master's program?"
+        )
+    }
+}
+
+
 class StructureRequest : Intent() {
     override fun getExamples(lang: Language): List<String> {
         return listOf(

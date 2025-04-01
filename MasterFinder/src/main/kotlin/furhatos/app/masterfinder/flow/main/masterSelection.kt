@@ -56,7 +56,7 @@ val MasterInformation: State = state(Parent){
 
     onEntry {
         if (master != null) {
-            furhat.ask("Would you like to know about the admission requirements, career opportunities, or the study structure for${master.name}?")
+            furhat.ask("Would you like to know about the admission requirements, career opportunities, faculty, duration or the study structure for${master.name}?")
         }
     }
 
@@ -70,6 +70,20 @@ val MasterInformation: State = state(Parent){
     onResponse<CareerRequest> {
         if (master != null) {
             furhat.say("Graduates of ${master.name} often pursue careers in ${master.careerProspects}.")
+        }
+        goto(OtherInformation)
+    }
+
+    onResponse<FacultyRequest> {
+        if (master != null) {
+            furhat.say("The faculty for ${master.name} is ${master.faculty}.")
+        }
+        goto(OtherInformation)
+    }
+
+    onResponse<DurationRequest> {
+        if (master != null) {
+            furhat.say("The duration of ${master.name} is ${master.duration}.")
         }
         goto(OtherInformation)
     }
