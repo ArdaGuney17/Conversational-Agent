@@ -189,7 +189,7 @@ val MasterDirection: State = state {
     }
     onResponse<Yes> {
         furhat.say("Great!")
-        goto(MasterSelection)
+        goto(MasterFromBachelor)
     }
     onResponse<No> {
         furhat.say("That is okay.")

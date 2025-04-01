@@ -4,14 +4,23 @@ import Requierements
 import furhatos.app.masterfinder.flow.Parent
 import furhatos.flow.kotlin.*
 import furhatos.nlu.*
-import furhatos.nlu.NullIntent.getExamples
 import furhatos.nlu.common.*
 import furhatos.util.Language
+import java.util.List
+import java.util.function.Consumer
 
 // Define custom intents
 
 
 
+var masterNames: kotlin.collections.List<String?>? = null
+
+class ProposedMasters : Intent(){
+    override fun getExamples(lang: Language): kotlin.collections.List<String?>? {
+        println(masterNames)
+        return masterNames
+    }
+}
 
 val MasterSelection: State = state(Parent) {
 
@@ -41,6 +50,68 @@ val MasterSelection: State = state(Parent) {
     onResponse<No> {
         furhat.say("Alright, let me know if you need any other assistance.")
         goto(Parent)
+    }
+}
+
+
+fun findMatchingMasters(bachelor: String): kotlin.collections.List<MasterProgram> {
+    return masterPrograms.filter { master ->
+        master.admission.contains(bachelor, ignoreCase = true)
+    }
+}
+
+val MasterFromBachelor: State = state {
+    onEntry {
+        val bachelorStudy = UserData.userStudyProgram
+        println("User selected Bachelor: $bachelorStudy")
+
+        val matchingMasters = bachelorStudy?.let { findMatchingMasters(it) }
+
+        if (matchingMasters != null) {
+            if (matchingMasters.isNotEmpty()) {
+                //masterNames = matchingMasters.joinToString(", ") { it.name }
+                masterNames = matchingMasters.map { it.name }
+                println(masterNames)
+                println(UserData.userOptionalMaster)
+                furhat.say("Based on your bachelor's degree in $bachelorStudy, you can apply for the following Master's programs: $masterNames.")
+                goto(KnowMoreAboutMaster)
+            } else {
+                furhat.say("I'm sorry, but I couldn't find a Master's program directly related to $bachelorStudy. You may need to check the admission requirements on the UT website.")
+            }
+        }
+
+        goto(Idle) // Move to the next state in your flow
+        }
+}
+
+val KnowMoreAboutMaster: State = state {
+    onEntry {
+        furhat.ask("Would you like more information about any of these masters?")
+    }
+
+    onResponse<Yes> {
+        goto(ChoiceMastersFromBachelor)
+    }
+
+    onResponse<No> {
+        goto(General)
+    }
+}
+
+val ChoiceMastersFromBachelor: State = state {
+    onEntry {
+        furhat.ask("Which masters?")
+    }
+
+    onResponse<ProposedMasters> {
+        val chosenMaster = it.text
+        UserData.userOptionalMaster = chosenMaster
+        goto(MasterInformation)
+    }
+
+    onResponse {
+        furhat.say("You did not answer any of the proposed masters")
+        goto(General)
     }
 }
 
