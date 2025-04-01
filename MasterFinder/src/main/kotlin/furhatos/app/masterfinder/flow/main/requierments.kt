@@ -1,62 +1,43 @@
-package furhatos.app.masterfinder.flow.main
-
 import furhatos.app.masterfinder.flow.Parent
 import furhatos.flow.kotlin.*
-import furhatos.nlu.common.No
-import furhatos.nlu.common.Yes
+import furhatos.nlu.common.*
 
-val Requirements: State = state(Parent) {  // Fixed typo in variable name (Requierements -> Requirements)
+val Requierements: State = state(Parent) {
+
     onEntry {
-        furhat.say("""
-            The general requirements for Master's programs at University of Twente are:
-            1. A relevant Bachelor's degree or equivalent
-            2. Proof of English proficiency (IELTS 6.5 or TOEFL 90)
-            3. Additional program-specific requirements may apply
-        """.trimIndent())
-        
-        furhat.ask("Are you from an EU/EEA country or Switzerland?")
+        furhat.ask("To apply for the master's program, you need a relevant bachelor's degree, a sufficient GPA, and English proficiency. Do you believe you meet these requirements?")
     }
 
     onResponse<Yes> {
-        furhat.say("""
-            For EU/EEA/Swiss applicants:
-            - Application deadline: June 1st for September start
-            - No visa required
-            - Tuition fee: €2,530 per year (2024)
-        """.trimIndent())
-        goto(ApplicationProcess)
+        furhat.ask("Great! May I ask about your nationality? Are you a Dutch citizen, a citizen of another EEA country, or a non-EEA citizen?")
     }
 
     onResponse<No> {
-        furhat.say("""
-            For non-EU/EEA applicants:
-            - Application deadline: May 1st for September start
-            - Visa required (apply early)
-            - Tuition fee: €18,000-€36,000 per year depending on program
-        """.trimIndent())
-        goto(ApplicationProcess)
-    }
-}
+        furhat.ask("Would you like more information about the requirements?")
+        
+        onResponse<Yes> {
+            furhat.say("You need a relevant bachelor's degree in a related field, a minimum GPA requirement depending on the program, and proof of English proficiency, usually IELTS 6.5 or TOEFL 90. Some programs may have additional requirements.")
+            furhat.ask("Do you think you can meet these requirements?")
+        }
 
-val ApplicationProcess: State = state(Parent) {
-    onEntry {
-        furhat.say("""
-            The application process involves:
-            1. Creating an account on Studielink
-            2. Submitting required documents
-            3. Paying application fee (if applicable)
-            4. Waiting for admission decision
-        """.trimIndent())
-        furhat.ask("Would you like me to explain any part in more detail?")
+        onResponse<No> {
+            furhat.say("If you do not meet all requirements, you may be eligible for a pre-master's program.")
+            goto(General)
+        }
     }
 
-    onResponse<Yes> {
-        // Add more detailed explanations here if needed
-        furhat.say("Let me know which part you'd like more information about.")
+    onResponse<Dutch> {
+        furhat.say("As a Dutch citizen, for a September intake, you can apply from 1 October with a deadline before 1 August. For a February intake, applications open on 1 March with a deadline before 1 January.")
         goto(General)
     }
 
-    onResponse<No> {
+    onResponse<EEA> {
+        furhat.say("As a citizen of another EEA country, for a September intake, you can apply from 1 October with a deadline before 1 July. For a February intake, applications open on 1 March with a deadline before 1 December.")
+        goto(General)
+    }
+
+    onResponse<NonEEA> {
+        furhat.say("As a non-EEA citizen, for a September intake, you can apply from 1 October with a deadline before 1 May. For a February intake, applications open on 1 March with a deadline before 1 October.")
         goto(General)
     }
 }
