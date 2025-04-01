@@ -113,6 +113,38 @@ class MasterCourses: Intent() {
     }
 }
 
-class Ethnicity : Intent() {
-    val ethnicity = listOf("Dutch","EEA","NonEEA")
+class Dutch: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("Dutch", "I am Dutch", "I am from the Netherlands", "I am a Dutch citizen")
+    }
 }
+
+class European: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("I am from another European country", "I am European", "I am from Europe")
+    }
+}
+
+class OutsideEurope: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("I am not from another European country", "I am not European", "I am not from Europe", "I come from outside of Europe")
+    }
+}
+
+class GeneralPreMaster: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("I want to know general information", "Give me general information", "general information")
+    }
+}
+
+class DurationPreMaster: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("Duration")
+    }
+}
+class BackgroundPreMaster: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("Duration")
+    }
+}
+
