@@ -21,9 +21,61 @@ class AskAboutRequirements: Intent() {
     }
 }
 
-class AdmissionRequest : Intent()
-class CareerRequest : Intent()
-class StructureRequest : Intent()
+class AdmissionRequest : Intent(){
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("The admission", "The admission requirements", "I would like to know more about the admission requirements")
+    }
+}
+class CareerRequest : Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+                "The career opportunities",
+                "What are the career prospects?",
+                "What job opportunities are there after graduation?",
+                "What kind of careers can I pursue?",
+                "Tell me about the career options",
+                "What can I do after completing this program?"
+        )
+    }
+}
+
+class FacultyRequest : Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+                "Which faculty offers this program?",
+                "What faculty is this master's program part of?",
+                "Tell me about the faculty for this program",
+                "Who teaches this program?",
+                "Which department is responsible for this master's?"
+        )
+    }
+}
+
+class DurationRequest : Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+                "How long does the program take?",
+                "What is the duration of this master's?",
+                "How many years does it take to complete?",
+                "How long will it take to finish the program?",
+                "What is the standard length of the master's program?"
+        )
+    }
+}
+
+
+class StructureRequest : Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+                "The structure",
+                "What does the program structure look like?",
+                "Can you tell me about the course structure?",
+                "What subjects are included in the program?",
+                "How is the program organized?",
+                "Give me an overview of the program structure"
+        )
+    }
+}
 
 class MasterCourses: Intent() {
     override fun getExamples(lang: Language): List<String> {

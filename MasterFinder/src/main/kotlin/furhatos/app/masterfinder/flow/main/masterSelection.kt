@@ -30,6 +30,7 @@ val MasterSelection: State = state(Parent) {
 
         if (master != null) {
             furhat.say("So you are interested in $master, that is nice to hear")
+            goto(MasterInformation)
         } else {
             furhat.say("I’m sorry, I couldn’t find that master’s program. Could you try again?")
             reentry()
@@ -42,25 +43,56 @@ val MasterSelection: State = state(Parent) {
     }
 }
 
-fun MasterDetails(master: MasterProgram): State = state {
+val MasterInformation: State = state(Parent){
+
+    fun getMasterByName(name: String?): MasterProgram? {
+        return masterPrograms.find { it.name.equals(name, ignoreCase = true) }
+    }
+
+
+    var master = getMasterByName(UserData.userOptionalMaster)
+
+
 
     onEntry {
-        furhat.ask("Would you like to know about the admission requirements, career opportunities, or the study structure for ${master.name}?")
+        if (master != null) {
+            furhat.ask("Would you like to know about the admission requirements, career opportunities, faculty, duration or the study structure for${master.name}?")
+        }
     }
 
     onResponse<AdmissionRequest> {
-        furhat.say("For ${master.name}, the admission requirements include: ${master.admission}.")
-        goto(ContinueOrEnd)
+        if (master != null) {
+            furhat.say("For ${master.name}, the admission requirements include: ${master.admission}.")
+        }
+        goto(OtherInformation)
     }
 
     onResponse<CareerRequest> {
-        furhat.say("Graduates of ${master.name} often pursue careers in ${master.careerProspects}.")
-        goto(ContinueOrEnd)
+        if (master != null) {
+            furhat.say("Graduates of ${master.name} often pursue careers in ${master.careerProspects}.")
+        }
+        goto(OtherInformation)
+    }
+
+    onResponse<FacultyRequest> {
+        if (master != null) {
+            furhat.say("The faculty for ${master.name} is ${master.faculty}.")
+        }
+        goto(OtherInformation)
+    }
+
+    onResponse<DurationRequest> {
+        if (master != null) {
+            furhat.say("The duration of ${master.name} is ${master.duration}.")
+        }
+        goto(OtherInformation)
     }
 
     onResponse<StructureRequest> {
-        furhat.say("${master.name} is structured as follows: ${master.structure}.")
-        goto(ContinueOrEnd)
+        if (master != null) {
+            furhat.say("${master.name} is structured as follows: ${master.structure}.")
+        }
+        goto(OtherInformation)
     }
 
     onResponse<No> {
@@ -69,9 +101,23 @@ fun MasterDetails(master: MasterProgram): State = state {
     }
 }
 
+val OtherInformation: State = state {
+    onEntry {
+        furhat.ask("Would you like other information about this masters?")
+    }
+
+    onResponse<Yes> {
+        goto(MasterInformation)
+    }
+
+    onResponse<No> {
+        goto(ContinueOrEnd)
+    }
+}
+
 val ContinueOrEnd: State = state {
     onEntry {
-        furhat.ask("Would you like to ask about another master's program?")
+        furhat.ask("Would you like information about an other masters program?")
     }
 
     onResponse<Yes> {
@@ -79,16 +125,11 @@ val ContinueOrEnd: State = state {
     }
 
     onResponse<No> {
-        furhat.say("Alright, have a great day!")
-        goto(Parent)
+        goto(General)
     }
 }
 
 
-
-
-
-/** Data Model for Master's Programs */
 data class MasterProgram(
         val name: String,
         val duration: String,
@@ -101,132 +142,29 @@ data class MasterProgram(
 
 /** List of Available Masters */
 val masterPrograms = listOf(
-        MasterProgram(
-                name = "Applied Mathematics",
-                duration = "2",
-                language = "English",
-                faculty = "Electrical Engineering, Mathematics and Computer Science",
-                admission = "A relevant bachelor's degree, sufficient English proficiency.",
-                careerProspects = "Data Science, Research, Engineering, Finance.",
-                structure = "Includes mathematical modeling, computational science, and data analytics."
-        ),
-        MasterProgram(
-                name = "Applied Physics",
-                duration = "2",
-                language = "English",
-                faculty = "Technical Physics",
-                admission = "Physics or engineering background, sufficient mathematics knowledge.",
-                careerProspects = "R&D, Engineering, Academia, High-tech industry.",
-                structure = "Specializations in nanotechnology, quantum physics, and fluid dynamics."
-        ),
-        MasterProgram(
-                name = "Shaping Responsible Futures",
-                duration = "1",
-                language = "English",
-                faculty = "Transdisciplinary Master-Insert",
-                admission = "Any discipline, motivation for transdisciplinary research.",
-                careerProspects = "Policy Making, Social Innovation, Systemic Change Consulting.",
-                structure = "Includes real-world challenges, collaboration with stakeholders, and self-directed learning."
-        ),
-        MasterProgram(
-                name = "Biomedical Engineering",
-                duration = "2",
-                language = "English",
-                faculty = "Biomedical Engineering",
-                admission = "Bachelor’s degree in Biomedical Engineering, Mechanical Engineering, or a related field.",
-                careerProspects = "Healthcare technology, Medical Devices, Research.",
-                structure = "Focus on medical technology, bioinstrumentation, and biomaterials."
-        ),
-        MasterProgram(
-                name = "Business Administration",
-                duration = "1",
-                language = "English",
-                faculty = "Business Administration",
-                admission = "Bachelor's degree in Business Administration or related fields.",
-                careerProspects = "Management, Consulting, Entrepreneurship.",
-                structure = "Management theory, business strategy, and leadership."
-        ),
-        MasterProgram(
-                name = "Business Information Technology",
-                duration = "2",
-                language = "English",
-                faculty = "Business Administration, Computer Science",
-                admission = "Bachelor's degree in Information Technology, Business, or related fields.",
-                careerProspects = "IT Management, Business Analysis, Software Development.",
-                structure = "Business processes, IT architecture, and data management."
-        ),
-        MasterProgram(
-                name = "Chemical Science and Engineering",
-                duration = "2",
-                language = "English",
-                faculty = "Engineering Technology",
-                admission = "Bachelor's degree in Chemical Engineering or related fields.",
-                careerProspects = "Chemical Engineering, Process Industries, R&D.",
-                structure = "Focus on process technology, chemical engineering, and materials science."
-        ),
-        MasterProgram(
-                name = "Civil Engineering and Management",
-                duration = "2",
-                language = "English",
-                faculty = "Engineering Technology",
-                admission = "Bachelor’s degree in Civil Engineering or related fields.",
-                careerProspects = "Construction, Urban Planning, Project Management.",
-                structure = "Urban design, project management, and sustainable infrastructure."
-        ),
-        MasterProgram(
-                name = "Communication Science",
-                duration = "2",
-                language = "English",
-                faculty = "Communication Science",
-                admission = "Bachelor's degree in Communication, Media, or related fields.",
-                careerProspects = "Public Relations, Media, Communication Strategy.",
-                structure = "Focus on communication theory, media studies, and digital communication."
-        ),
-        MasterProgram(
-                name = "Computer Science",
-                duration = "2",
-                language = "English",
-                faculty = "Electrical Engineering, Mathematics and Computer Science",
-                admission = "Bachelor's degree in Computer Science, Software Engineering, or related fields.",
-                careerProspects = "Software Development, AI, Data Science.",
-                structure = "Programming, algorithms, artificial intelligence, and software engineering."
-        ),
-        MasterProgram(
-                name = "Electrical Engineering",
-                duration = "2",
-                language = "English",
-                faculty = "Electrical Engineering, Mathematics and Computer Science",
-                admission = "Bachelor's degree in Electrical Engineering or related fields.",
-                careerProspects = "Telecommunications, Power Systems, Embedded Systems.",
-                structure = "Electronics, circuits, systems design, and signal processing."
-        ),
-        MasterProgram(
-                name = "Embedded Systems",
-                duration = "2",
-                language = "English",
-                faculty = "Electrical Engineering, Mathematics and Computer Science",
-                admission = "Bachelor's degree in Electrical Engineering, Computer Science, or related fields.",
-                careerProspects = "Embedded Systems Development, IoT, Automation.",
-                structure = "Focus on hardware, software, and system integration."
-        ),
-        MasterProgram(
-                name = "Environmental and Energy Management",
-                duration = "2",
-                language = "English",
-                faculty = "Engineering Technology",
-                admission = "Bachelor's degree in Environmental Science, Engineering, or related fields.",
-                careerProspects = "Sustainability, Energy Management, Policy Development.",
-                structure = "Energy systems, sustainability strategies, and environmental impact."
-        ),
-        MasterProgram(
-                name = "Mechanical Engineering",
-                duration = "2",
-                language = "English",
-                faculty = "Engineering Technology",
-                admission = "Bachelor’s degree in Mechanical Engineering or related fields.",
-                careerProspects = "Engineering, Design, Manufacturing.",
-                structure = "Design and analysis, thermodynamics, materials science."
-        )
-        // Add more programs as needed
+        MasterProgram("Applied Mathematics", "2", "English", "Electrical Engineering, Mathematics and Computer Science", "A relevant bachelor's degree, sufficient English proficiency.", "Data Science, Research, Engineering, Finance.", "Includes mathematical modeling, computational science, and data analytics."),
+        MasterProgram("Applied Physics", "2", "English", "Technical Physics", "Physics or engineering background, sufficient mathematics knowledge.", "R&D, Engineering, Academia, High-tech industry.", "Specializations in nanotechnology, quantum physics, and fluid dynamics."),
+        MasterProgram("Biomedical Engineering", "2", "English", "Biomedical Engineering", "Bachelor’s degree in Biomedical Engineering, Mechanical Engineering, or a related field.", "Healthcare technology, Medical Devices, Research.", "Focus on medical technology, bioinstrumentation, and biomaterials."),
+        MasterProgram("Business Administration", "1", "English", "Behavioural, Management and Social Sciences", "Bachelor's degree in Business Administration or related fields.", "Management, Consulting, Entrepreneurship.", "Management theory, business strategy, and leadership."),
+        MasterProgram("Business Information Technology", "2", "English", "Electrical Engineering, Mathematics and Computer Science", "Bachelor's degree in Information Technology, Business, or related fields.", "IT Management, Business Analysis, Software Development.", "Business processes, IT architecture, and data management."),
+        MasterProgram("Chemical Science and Engineering", "2", "English", "Engineering Technology", "Bachelor's degree in Chemical Engineering or related fields.", "Chemical Engineering, Process Industries, R&D.", "Focus on process technology, chemical engineering, and materials science."),
+        MasterProgram("Civil Engineering and Management", "2", "English", "Engineering Technology", "Bachelor’s degree in Civil Engineering or related fields.", "Construction, Urban Planning, Project Management.", "Urban design, project management, and sustainable infrastructure."),
+        MasterProgram("Communication Science", "1", "English", "Behavioural, Management and Social Sciences", "Bachelor's degree in Communication, Media, or related fields.", "Public Relations, Media, Communication Strategy.", "Focus on communication theory, media studies, and digital communication."),
+        MasterProgram("Computer Science", "2", "English", "Electrical Engineering, Mathematics and Computer Science", "Bachelor's degree in Computer Science, Software Engineering, or related fields.", "Software Development, AI, Data Science.", "Programming, algorithms, artificial intelligence, and software engineering."),
+        MasterProgram("Construction Management and Engineering", "2", "English", "Engineering Technology", "Bachelor’s degree in Civil Engineering or related fields.", "Construction, Infrastructure, Project Management.", "Construction process optimization, risk management, and digital construction."),
+        MasterProgram("Educational Science and Technology", "1", "English", "Behavioural, Management and Social Sciences", "Bachelor’s degree in Education, Psychology, or related fields.", "Educational Technology, Instructional Design, Research.", "Curriculum development, instructional design, learning analytics."),
+        MasterProgram("Electrical Engineering", "2", "English", "Electrical Engineering, Mathematics and Computer Science", "Bachelor's degree in Electrical Engineering or related fields.", "Telecommunications, Power Systems, Embedded Systems.", "Electronics, circuits, systems design, and signal processing."),
+        MasterProgram("Embedded Systems", "2", "English", "Electrical Engineering, Mathematics and Computer Science", "Bachelor's degree in Electrical Engineering, Computer Science, or related fields.", "Embedded Systems Development, IoT, Automation.", "Focus on hardware, software, and system integration."),
+        MasterProgram("Environmental and Energy Management", "1", "English", "Engineering Technology", "Bachelor's degree in Environmental Science, Engineering, or related fields.", "Sustainability, Energy Management, Policy Development.", "Energy systems, sustainability strategies, and environmental impact."),
+        MasterProgram("European Studies", "1", "English", "Behavioural, Management and Social Sciences", "Bachelor's degree in Social Sciences, Political Science, or related fields.", "Policy Analysis, Diplomacy, Governance.", "European governance, policy evaluation, international relations."),
+        MasterProgram("Health Sciences", "1", "English", "Behavioural, Management and Social Sciences", "Bachelor’s degree in Health Sciences or related fields.", "Healthcare Management, Policy Development, Research.", "Healthcare systems, patient-centered care, and policy analysis."),
+        MasterProgram("Industrial Design Engineering", "2", "English", "Engineering Technology", "Bachelor’s degree in Industrial Design, Engineering, or related fields.", "Product Design, UX Design, Innovation Management.", "User-centered design, prototyping, design methodology."),
+        MasterProgram("Industrial Engineering and Management", "2", "English", "Behavioural, Management and Social Sciences", "Bachelor's degree in Industrial Engineering, Business, or related fields.", "Operations Management, Logistics, Consultancy.", "Process optimization, supply chain management, and decision support systems."),
+        MasterProgram("Interaction Technology", "2", "English", "Electrical Engineering, Mathematics and Computer Science", "Bachelor’s degree in Computer Science, Psychology, or related fields.", "Human-Computer Interaction, AI, UX Design.", "Focus on user experience, artificial intelligence, and robotics."),
+        MasterProgram("Mechanical Engineering", "2", "English", "Engineering Technology", "Bachelor’s degree in Mechanical Engineering or related fields.", "Engineering, Design, Manufacturing.", "Design and analysis, thermodynamics, materials science."),
+        MasterProgram("Nanotechnology", "2", "English", "Engineering Technology", "Bachelor's degree in Physics, Chemistry, or related fields.", "Nanomaterials, Research, High-tech Industry.", "Nanomaterials, nanoelectronics, and nanomedicine."),
+        MasterProgram("Philosophy of Science, Technology and Society", "1", "English", "Behavioural, Management and Social Sciences", "Bachelor's degree in Social Sciences, Humanities, or related fields.", "Policy Making, Ethics Consulting, Research.", "Ethics of technology, science communication, and future studies."),
+        MasterProgram("Psychology", "1", "English", "Behavioural, Management and Social Sciences", "Bachelor's degree in Psychology or related fields.", "Clinical Psychology, Research, Human Factors.", "Cognitive psychology, human factors, and mental health."),
+        MasterProgram("Public Administration", "1", "English", "Behavioural, Management and Social Sciences", "Bachelor's degree in Political Science, Public Administration, or related fields.", "Government, Policy Making, Management.", "Public sector management, governance, and policy analysis."),
+        MasterProgram("Robotics", "2", "English", "Electrical Engineering, Mathematics and Computer Science", "Bachelor's degree in Engineering, Computer Science, or related fields.", "Autonomous Systems, AI, Industrial Robotics.", "Robot design, AI-driven automation, control systems.")
 )
-
