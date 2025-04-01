@@ -133,7 +133,6 @@ val BachelorSelection: State = state(Parent) {
     }
 
     onResponse<NoBachelor> {
-        furhat.ask("Are you enrolled as a bachelor student?")
         goto(EnrolledAsBachelor) // Transition to the next state
     }
 
@@ -147,8 +146,22 @@ val BachelorSelection: State = state(Parent) {
 }
 
 val EnrolledAsBachelor: State = state {
+
+    onEntry {
+        furhat.ask("Are you enrolled as a bachelor student?")
+    }
+
     onResponse<Yes> {
-        furhat.ask("What are you studying?")
+        goto(TellsAboutBachelor)
+    }
+    onResponse<No> {
+        furhat.say("I can only help you to find a master study. Information about bachelor studies are available on the UT website.")
+        goto(General)
+    }
+}
+
+val WhatIsBachelor: State = state {
+    onResponse<Yes> {
         goto(TellsAboutBachelor)
     }
     onResponse<No> {
@@ -158,6 +171,9 @@ val EnrolledAsBachelor: State = state {
 }
 
 val TellsAboutBachelor: State = state {
+    onEntry {
+        furhat.ask("What are you studying?")
+    }
     onResponse<Bachelors> {
         val userInput = it.text // Get the user's response as a String
         val bachelorsIntent = Bachelors()

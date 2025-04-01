@@ -1,6 +1,79 @@
+/*package furhatos.app.masterfinder.flow.main
+
 import furhatos.app.masterfinder.flow.Parent
 import furhatos.flow.kotlin.*
 import furhatos.nlu.common.*
+import furhatos.util.Language
+
+    val euDeadline = "July 1st"
+    val nonEuDeadline = "May 1st"
+    val requiredGpa = "7.0 Dutch scale"
+    val englishTests = "IELTS 6.5 or TOEFL 90"
+
+
+
+val MasterRequirements: State = state(Parent) {
+
+    onEntry {
+        furhat.say("Let me help you with the University of Twente Master's application!")
+        furhat.ask("To start, are you from an EU/EEA country like the Netherlands or Germany?")
+    }
+
+    /* ===== COUNTRY HANDLING ===== */
+    onResponse<Yes> {
+        furhat.say("Great! EU applicants have simpler processes.")
+        goto(CheckEuRequirements)
+    }
+
+    onResponse<No> {
+        furhat.say("I'll guide you through the international student process.")
+        goto(CheckInternationalRequirements)
+    }
+
+    // Handle when user mentions a country name
+    onResponse {
+        val country = it.text.lowercase()
+        when {
+            country.contains("netherlands") -> {
+                furhat.say("Dutch students qualify for the EU deadline of $euDeadline.")
+                goto(CheckDutchStudentStatus)
+            }
+            country.contains("india") || country.contains("china") -> {
+                furhat.say("Many students from ${it.text} attend UT! Your deadline is $nonEuDeadline.")
+                goto(CheckInternationalRequirements)
+            }
+            else -> {
+                furhat.say("Thanks for sharing! Let's check your requirements.")
+                goto(GeneralRequirementsCheck)
+            }
+        }
+    }
+}
+
+/* ===== EU APPLICANT FLOW ===== */
+val CheckEuRequirements: State = state {
+    onEntry {
+        furhat.say("""
+            |For EU applicants, you'll need:
+            |1. A recognized bachelor's degree
+            |2. GPA equivalent to $requiredGpa
+            |3. $englishTests English proficiency
+            |The deadline is $euDeadline.
+            """.trimMargin())
+        
+        furhat.ask("Do you meet these three requirements?")
+    }
+
+    onResponse<Yes> {
+        furhat.say("Excellent! Let's discuss your program options.")
+        goto(ProgramSelection)
+    }
+
+    onResponse<No> {
+        furhat.say("No worries! Let's explore alternatives.")
+        goto(PreMasterOptions)
+    }
+}
 
 val Requierements: State = state(Parent) {
 
@@ -41,3 +114,4 @@ val Requierements: State = state(Parent) {
         goto(General)
     }
 }
+*/
