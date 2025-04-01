@@ -6,3 +6,19 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
+# Gradle files
+.gradle/
+build/
+out/
+.gradle
+*.log
+
+# Ignore IDE configuration files (optional)
+.idea/
+.vscode/
+*.iml
+
+# Ignore OS-specific files (optional)
+.DS_Store
+Thumbs.db

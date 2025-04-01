@@ -10,12 +10,6 @@ import furhatos.nlu.common.No
 import furhatos.nlu.common.Yes
 import furhatos.util.Language
 
-/*class TellAboutBachelor: Intent() {
-    override fun getExamples(lang: Language): List<String> {
-        return listOf("Tell me about master's programs", "I want to know about the Master programs", "What Master programs are available?", "I want help choosing a Masters")
-    }
-}*/
-
 class NoBachelor: Intent() {
     override fun getExamples(lang: Language): List<String> {
         return listOf("I do not have a bachelor degree", "I am not a student")
@@ -23,8 +17,6 @@ class NoBachelor: Intent() {
 }
 
 class Bachelors: Intent() {
-    private var userStudyProgram: String? = null
-
     override fun getExamples(lang: Language): List<String> {
         // Static list of Bachelor programs at UT
         val bachelorStudies = listOf( //needs to be updated
@@ -49,7 +41,7 @@ class Bachelors: Intent() {
         return bachelorStudies
     }
 
-    // This method processes the user's input and stores the study program.
+    // This method processes the user's input and stores the study program
     fun processUserInput(userInput: String) {
         val bachelorStudies = getExamples(Language.ENGLISH_GB)
 
@@ -63,6 +55,74 @@ class Bachelors: Intent() {
 
         // Log the study program (just for demo)
         println("User is studying: ${UserData.userStudyProgram}")
+    }
+}
+
+class Interests: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        // Static list of interests
+        val interests = listOf(
+            "mathematics",
+            "physics",
+            "biomedical engineering",
+            "business and management",
+            "information technology",
+            "chemical engineering",
+            "civil engineering",
+            "communication science",
+            "computer science",
+            "construction management",
+            "education and learning",
+            "electrical engineering",
+            "embedded systems",
+            "environmental science",
+            "european studies",
+            "geoinformatics",
+            "health and medicine",
+            "humanitarian engineering",
+            "industrial design",
+            "industrial engineering",
+            "human-computer interaction",
+            "mechanical engineering",
+            "nanotechnology",
+            "philosophy and ethics",
+            "psychology",
+            "public administration",
+            "robotics",
+            "science and technology studies",
+            "spatial engineering",
+            "sustainable energy",
+            "technical medicine",
+            "water technology"
+        )
+        println("DEBUG: Interests intent loaded with examples: $interests") // NEW LOG
+        return interests
+    }
+
+    // This method processes the user's input and stores the study program
+    fun processUserInterest(userInput: String) {
+        val interests = getExamples(Language.ENGLISH_GB)
+        val matchedInterest = interests.firstOrNull { interest ->
+            userInput.trim().equals(interest, ignoreCase = true) || userInput.contains(Regex("\\b$interest\\b", RegexOption.IGNORE_CASE))
+        }
+
+        if (matchedInterest != null) {
+            UserData.userInterests = matchedInterest
+            println("Matched interest: $matchedInterest")
+        } else {
+            println("No matching interest found for: $userInput")
+        }
+
+        /*for (interest in userInterests) {
+            if (userInput.contains(interest, ignoreCase = true)) {
+                // Save the study program to the UserData singleton
+                UserData.userInterests = interest
+                break
+            }
+        }
+
+        // Log the study program (just for demo)
+        println("User has interest in: ${UserData.userInterests}")*/
     }
 }
 
@@ -116,8 +176,31 @@ val MasterDirection: State = state {
         goto(MasterSelection)
     }
     onResponse<No> {
-        furhat.say("Okay.")
-        furhat.ask("What else would you like to learn in your masters?")
+        furhat.say("That is okay.")
+        println("Going to TellsAboutInterests") // Debugging
+        goto(TellsAboutInterests)
+    }
+}
+
+val TellsAboutInterests: State = state {
+    onEntry {
+        println("In TellsAboutInterests") // Debug log
+        furhat.ask("Can you tell me more about your interests?")
+    }
+    onResponse<Interests> {
+        println("User input classified as: ${it.intent}")
+        val userInterest = it.text // Get the user's response as a String
+        val interests = Interests()
+        interests.processUserInterest(userInterest) // Call the method to process and save the study program
+        println("User has interest in: ${UserData.userInterests}")
+        goto(GroundingInterest)
+    }
+}
+
+val GroundingInterest: State = state {
+    onEntry {
+        val interest = UserData.userInterests
+        furhat.say("Okay, I can tell you more about $interest")
         goto(MasterSelection)
     }
 }
