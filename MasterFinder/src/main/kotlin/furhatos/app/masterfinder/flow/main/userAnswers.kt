@@ -148,3 +148,9 @@ class BackgroundPreMaster: Intent() {
     }
 }
 
+class PurposePreMaster: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("Purpose")
+    }
+}
+

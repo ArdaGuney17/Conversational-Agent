@@ -48,7 +48,12 @@ val WhatKindOfInfo: State = state(Parent) {
     }
 
     onResponse<BackgroundPreMaster> {
-        furhat.say("You need" + UserData.userOptionalMaster?.let { it1 -> findPreMaster(it1) })
+        furhat.say("You need a" + findPreMaster(UserData.userOptionalMaster)!!.requiredBackground + ". Please visit the UT website if you need any more information")
+        goto(Nationality)
+    }
+
+    onResponse<PurposePreMaster> {
+        furhat.say("You need a" + findPreMaster(UserData.userOptionalMaster)!!.purpose + ". Please visit the UT website if you need any more information")
         goto(Nationality)
     }
 
@@ -77,10 +82,8 @@ val Nationality: State = state(Parent) {
 
 }
 
-fun findPreMaster(program: String): kotlin.collections.List<PreMasterProgram> {
-    return preMasters.filter { preMaster ->
-        preMaster.name.contains(program, ignoreCase = true)
-    }
+fun findPreMaster(name: String?): PreMasterProgram? {
+    return preMasters.find { it.name.equals(name, ignoreCase = true) }
 }
 
 data class PreMasterProgram(
