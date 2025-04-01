@@ -75,141 +75,43 @@ val CheckEuRequirements: State = state {
     }
 }
 
-/* ===== INTERNATIONAL APPLICANT FLOW ===== */ 
-val CheckInternationalRequirements: State = state {
-    onEntry {
-        furhat.say("""
-            |For international students:
-            |1. All standard academic requirements
-            |2. Earlier deadline: $nonEuDeadline
-            |3. Visa documentation needed
-            |4. €100 application fee
-            """.trimMargin())
-        
-        furhat.ask("Would you like me to explain any part in detail?")
-    }
+val Requierements: State = state(Parent) {
 
-    onResponse {
-        when (it.text.lowercase()) {
-            contains("visa") -> {
-                furhat.say("""
-                    |You'll need:
-                    |1. Valid passport
-                    |2. Financial proof (€11,000/year)
-                    |3. Health insurance
-                    |The university assists with visa applications.
-                    """.trimMargin())
-            }
-            contains("fee") -> {
-                furhat.say("The €100 fee is non-refundable and paid via credit card during application.")
-            }
-            else -> {
-                furhat.say("I recommend visiting utwente.nl/international for complete details.")
-            }
-        }
-        goto(GeneralRequirementsCheck)
-    }
-}
-
-/* ===== CORE STATES ===== */
-val GeneralRequirementsCheck: State = state {
     onEntry {
-        furhat.ask("""
-            |Should we check if you qualify?
-            |I'll need to know about:
-            |1. Your bachelor's degree
-            |2. Your grades
-            |3. English test status
-            """.trimMargin())
+        furhat.ask("To apply for the master's program, you need a relevant bachelor's degree, a sufficient GPA, and English proficiency. Do you believe you meet these requirements?")
     }
 
     onResponse<Yes> {
-        goto(QualificationInterview)
+        furhat.ask("Great! May I ask about your nationality? Are you a Dutch citizen, a citizen of another EEA country, or a non-EEA citizen?")
     }
 
     onResponse<No> {
-        furhat.say("No problem! You can find all requirements at utwente.nl/master.")
-        goto(Goodbye)
-    }
-}
-
-val QualificationInterview: State = state {
-    onEntry {
-        furhat.ask("First, what was your bachelor's field of study?")
-    }
-
-    onResponse {
-        users.current.studyField = it.text
-        furhat.ask("And was your GPA equivalent to at least $requiredGpa?")
+        furhat.ask("Would you like more information about the requirements?")
         
         onResponse<Yes> {
-            furhat.ask("Do you have $englishTests English test results?")
-            
-            onResponse<Yes> {
-                furhat.say("Congratulations! You likely qualify for direct admission.")
-                goto(ProgramSelection)
-            }
-            
-            onResponse<No> {
-                furhat.say("You'll need English test results before enrollment.")
-                goto(EnglishTestOptions)
-            }
+            furhat.say("You need a relevant bachelor's degree in a related field, a minimum GPA requirement depending on the program, and proof of English proficiency, usually IELTS 6.5 or TOEFL 90. Some programs may have additional requirements.")
+            furhat.ask("Do you think you can meet these requirements?")
         }
-        
+
         onResponse<No> {
-            furhat.say("Your GPA might require a pre-master's program.")
-            goto(PreMasterOptions)
+            furhat.say("If you do not meet all requirements, you may be eligible for a pre-master's program.")
+            goto(General)
         }
     }
-}
 
-/* ===== SUPPORTING STATES ===== */
-val PreMasterOptions: State = state {
-    onEntry {
-        furhat.say("""
-            |The pre-master's:
-            |• Takes 6-12 months
-            |• Bridges knowledge gaps
-            |• Leads to master's admission
-            |I can connect you with an advisor if interested.
-            """.trimMargin())
-        goto(Goodbye)
+    onResponse<Dutch> {
+        furhat.say("As a Dutch citizen, for a September intake, you can apply from 1 October with a deadline before 1 August. For a February intake, applications open on 1 March with a deadline before 1 January.")
+        goto(General)
     }
-}
 
-val ProgramSelection: State = state {
-    onEntry {
-        furhat.say("""
-            |Popular programs include:
-            |1. Computer Science
-            |2. Engineering
-            |3. Technical Medicine
-            |Should I explain any program?
-            """.trimMargin())
+    onResponse<EEA> {
+        furhat.say("As a citizen of another EEA country, for a September intake, you can apply from 1 October with a deadline before 1 July. For a February intake, applications open on 1 March with a deadline before 1 December.")
+        goto(General)
     }
-}
 
-val EnglishTestOptions: State = state {
-    onEntry {
-        furhat.say("""
-            |You can take:
-            |1. IELTS Academic
-            |2. TOEFL iBT
-            |3. Cambridge C1 Advanced
-            |The university accepts tests up to 2 years old.
-            """.trimMargin())
-        goto(Goodbye)
-    }
-}
-
-val Goodbye: State = state {
-    onEntry {
-        furhat.say("""
-            |Good luck with your application!
-            |Visit utwente.nl/master for details.
-            |Come back anytime for help.
-            """.trimMargin())
-        terminate()
+    onResponse<NonEEA> {
+        furhat.say("As a non-EEA citizen, for a September intake, you can apply from 1 October with a deadline before 1 May. For a February intake, applications open on 1 March with a deadline before 1 October.")
+        goto(General)
     }
 }
 */
