@@ -64,7 +64,7 @@ val MasterInformation: State = state(Parent){
         if (master != null) {
             furhat.say("For ${master.name}, the admission requirements include: ${master.admission}.")
         }
-        goto(OtherInformation)
+        goto(Requierements)
     }
 
     onResponse<CareerRequest> {
