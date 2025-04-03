@@ -175,7 +175,7 @@ class Interests: Intent() {
 
 val BachelorSelection: State = state(Parent) {
     onEntry {
-        furhat.ask("What is your bachelor degree?")
+        furhat.ask("What is your bachelor degree" + UserData.userName + "?")
     }
 
     onResponse<NoBachelor> {

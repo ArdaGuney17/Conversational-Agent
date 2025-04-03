@@ -184,3 +184,21 @@ class AskAboutPreMaster: Intent() {
     }
 }
 
+class Name: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+                "I am",
+                "I'm",
+                "My name is",
+                "Call me",
+                "You can call me",
+                "They call me",
+                "I go by",
+                "It's",
+                "This is",
+                "My friends call me"
+        )
+    }
+}
+
+

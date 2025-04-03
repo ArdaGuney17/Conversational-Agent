@@ -11,6 +11,31 @@ import furhatos.nlu.common.Yes
 val Greeting: State = state(Parent) {
     onEntry {
         furhat.say("Hello! My name is Matty, I can help you find your master's program")
+        furhat.ask("What is your name?")
+    }
+
+    onResponse<Name> {
+        val userInput = it.text
+        val userInputSplit = userInput.split(" ")
+        val name = userInputSplit[userInputSplit.size-1]
+        UserData.userName = name
+
+        furhat.say("Hello" + UserData.userName + ", nice to meet you!")
+        goto(Greeting2)
+    }
+
+    onResponse {
+        val userInput = it.text
+        val name = userInput
+        UserData.userName = name
+
+        furhat.say("Hello" + UserData.userName + ", nice to meet you!")
+        goto(Greeting2)
+    }
+}
+
+val Greeting2: State = state(Parent) {
+    onEntry {
         furhat.ask("Do you want help choosing your master's?")
     }
 
@@ -25,10 +50,11 @@ val Greeting: State = state(Parent) {
     }
 }
 
+
 // New state to ask about preferences
 val AskIfSomethingInMind: State = state(Parent) {
     onEntry {
-        furhat.ask("Do you already have something in mind?")
+        furhat.ask("Do you already have something in mind" + UserData.userName + "?")
     }
 
     onResponse<YesAnswer> {

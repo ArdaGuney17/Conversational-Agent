@@ -12,6 +12,7 @@ import furhatos.flow.kotlin.state
 import furhatos.nlu.Intent
 import furhatos.nlu.common.No
 import furhatos.nlu.common.Yes
+import furhatos.records.User
 import furhatos.util.Language
 
 
@@ -20,9 +21,9 @@ val General: State = state {
     onEntry {
         furhat.ask{
             random {
-                +"Is there anything else I can help you with?"
+                +"Is there anything else I can help you with ${UserData.userName}?"
                 +"Do you have any other questions?"
-                +"Anything else I can do for you?"
+                +"Anything else I can do for you ${UserData.userName}?"
                 +"Before we wrap up, is there anything else I can assist you with?"
             }
         }

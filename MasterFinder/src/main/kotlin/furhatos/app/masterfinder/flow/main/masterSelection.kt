@@ -202,7 +202,7 @@ val MasterInformation: State = state(Parent){
 
 val OtherInformation: State = state {
     onEntry {
-        furhat.ask("Would you like other information about this masters?")
+        furhat.ask("Would you like other information about this masters" + UserData.userName + "?")
     }
 
     onResponse<YesAnswer> {
