@@ -140,7 +140,7 @@ class DurationPreMaster: Intent() {
 }
 class BackgroundPreMaster: Intent() {
     override fun getExamples(lang: Language): List<String> {
-        return listOf("Duration")
+        return listOf("background")
     }
 }
 
