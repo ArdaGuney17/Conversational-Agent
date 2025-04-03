@@ -178,3 +178,9 @@ class PurposePreMaster: Intent() {
     }
 }
 
+class AskAboutPreMaster: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("pre-master")
+    }
+}
+

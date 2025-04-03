@@ -196,8 +196,7 @@ val MasterInformation: State = state(Parent){
     }
 
     onResponse<NoAnswer> {
-        furhat.say("Alright, let me know if you have any other questions!")
-        goto(Parent)
+        goto(General)
     }
 }
 

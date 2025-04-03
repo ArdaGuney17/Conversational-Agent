@@ -1,6 +1,7 @@
 package furhatos.app.masterfinder.flow.main
 
 import Requierements
+import WhatKindOfInfo
 import sun.java2d.loops.FillRect.General
 
 import furhatos.app.masterfinder.flow.Parent
@@ -35,6 +36,18 @@ val General: State = state {
         furhat.say("Okay, happy to have been of assistance")
         goto(Idle)
     }
+
+    onResponse<AskAboutMasters> {
+        goto(MasterSelection)
+    }
+
+    onResponse<AskAboutBachelors> {
+        goto(BachelorSelection) //change to bachelor
+    }
+
+    onResponse<AskAboutRequirements> {
+        goto(Requierements) //change to requirements
+    }
 }
 
 val FollowUpQuestion: State = state {
@@ -59,5 +72,12 @@ val FollowUpQuestion: State = state {
         goto(Requierements) //change to requirements
     }
 
+    onResponse<AskAboutPreMaster> {
+        goto(WhatKindOfInfo) //change to requirements
+    }
+
+    onResponse<CareerRequest> {
+        goto(MasterSelection)
+    }
 
 }
