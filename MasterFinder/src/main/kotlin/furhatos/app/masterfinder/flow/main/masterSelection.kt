@@ -45,7 +45,7 @@ val MasterSelection: State = state(Parent) {
         }
     }
 
-    onResponse<No> {
+    onResponse<NoAnswer> {
         furhat.say("Alright, let me know if you need any other assistance.")
         goto(Parent)
     }
@@ -87,11 +87,11 @@ val KnowMoreAboutMaster: State = state {
         furhat.ask("Would you like more information about any of these masters?")
     }
 
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         goto(ChoiceMastersFromBachelor)
     }
 
-    onResponse<No> {
+    onResponse<NoAnswer> {
         goto(General)
     }
 }
@@ -156,7 +156,7 @@ val MasterInformation: State = state(Parent){
 
     onEntry {
         if (master != null) {
-            furhat.ask("Would you like to know about the admission requirements, career opportunities, faculty, duration or the study structure for${master.name}?")
+            furhat.ask("Would you like to know about the admission requirements, career opportunities, faculty, duration or the study structure for ${master.name}?")
         }
     }
 
@@ -195,22 +195,21 @@ val MasterInformation: State = state(Parent){
         goto(OtherInformation)
     }
 
-    onResponse<No> {
-        furhat.say("Alright, let me know if you have any other questions!")
-        goto(Parent)
+    onResponse<NoAnswer> {
+        goto(General)
     }
 }
 
 val OtherInformation: State = state {
     onEntry {
-        furhat.ask("Would you like other information about this masters?")
+        furhat.ask("Would you like other information about this masters" + UserData.userName + "?")
     }
 
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         goto(MasterInformation)
     }
 
-    onResponse<No> {
+    onResponse<NoAnswer> {
         goto(ContinueOrEnd)
     }
 }
@@ -220,11 +219,11 @@ val ContinueOrEnd: State = state {
         furhat.ask("Would you like information about an other masters program?")
     }
 
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         goto(MasterSelection)
     }
 
-    onResponse<No> {
+    onResponse<NoAnswer> {
         goto(General)
     }
 }

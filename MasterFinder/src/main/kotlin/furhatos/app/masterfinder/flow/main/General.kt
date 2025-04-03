@@ -1,5 +1,7 @@
 package furhatos.app.masterfinder.flow.main
 
+import Requierements
+import WhatKindOfInfo
 import sun.java2d.loops.FillRect.General
 
 import furhatos.app.masterfinder.flow.Parent
@@ -10,6 +12,7 @@ import furhatos.flow.kotlin.state
 import furhatos.nlu.Intent
 import furhatos.nlu.common.No
 import furhatos.nlu.common.Yes
+import furhatos.records.User
 import furhatos.util.Language
 
 
@@ -18,21 +21,32 @@ val General: State = state {
     onEntry {
         furhat.ask{
             random {
-                +"Is there anything else I can help you with?"
+                +"Is there anything else I can help you with ${UserData.userName}?"
                 +"Do you have any other questions?"
-                +"Anything else I can do for you?"
+                +"Anything else I can do for you ${UserData.userName}?"
                 +"Before we wrap up, is there anything else I can assist you with?"
             }
         }
     }
 
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         goto(FollowUpQuestion) // Transition to MasterSelection
     }
 
-    onResponse<No> {
-        furhat.say("Okay, happy to have been of assistance")
+    onResponse<NoAnswer> {
         goto(Idle)
+    }
+
+    onResponse<AskAboutMasters> {
+        goto(MasterSelection)
+    }
+
+    onResponse<AskAboutBachelors> {
+        goto(BachelorSelection) //change to bachelor
+    }
+
+    onResponse<AskAboutRequirements> {
+        goto(Requierements) //change to requirements
     }
 }
 
@@ -51,12 +65,19 @@ val FollowUpQuestion: State = state {
     }
 
     onResponse<AskAboutBachelors> {
-        goto(MasterSelection) //change to bachelor
+        goto(BachelorSelection) //change to bachelor
     }
 
     onResponse<AskAboutRequirements> {
-        goto(MasterSelection) //change to requirements
+        goto(Requierements) //change to requirements
     }
 
+    onResponse<AskAboutPreMaster> {
+        goto(WhatKindOfInfo) //change to requirements
+    }
+
+    onResponse<CareerRequest> {
+        goto(MasterSelection)
+    }
 
 }

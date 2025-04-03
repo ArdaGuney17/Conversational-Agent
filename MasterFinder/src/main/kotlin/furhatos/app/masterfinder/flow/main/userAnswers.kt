@@ -9,6 +9,18 @@ class AskAboutMasters: Intent() {
     }
 }
 
+class YesAnswer: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("Yes", "Yeah", "Yep", "Sure", "Absolutely", "Of course", "Yup", "Definitely", "Indeed", "Affirmative")
+    }
+}
+
+class NoAnswer: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("No", "Nope", "Nah", "Not really", "I don’t think so", "Negative", "Absolutely not", "No way", "Not at all", "Never")
+    }
+}
+
 class AskAboutBachelors: Intent() {
     override fun getExamples(lang: Language): List<String> {
         return listOf("I don't know what Masters I want", "I have no idea what Masters I want to do")
@@ -117,7 +129,23 @@ class Dutch: Intent() {
 
 class European: Intent() {
     override fun getExamples(lang: Language): List<String> {
-        return listOf("I am from another European country", "I am European", "I am from Europe")
+        return listOf("I am from another European country", "I am European", "I am from Europe", "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czech Republic",
+                "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary",
+                "Iceland", "Ireland", "Italy", "Latvia", "Liechtenstein", "Lithuania",
+                "Luxembourg", "Malta", "Norway", "Poland", "Portugal", "Romania",
+                "Slovakia", "Slovenia", "Spain", "Sweden",
+
+                // Non-EEA European countries
+                "Albania", "Andorra", "Belarus", "Bosnia and Herzegovina", "Georgia",
+                "Kosovo", "Moldova", "Monaco", "Montenegro", "North Macedonia",
+                "San Marino", "Serbia", "Switzerland", "Ukraine", "United Kingdom", "Vatican City", "Austrian", "Belgian", "Bulgarian", "Croatian", "Cypriot", "Czech",
+                "Danish", "Estonian", "Finnish", "French", "German", "Greek", "Hungarian",
+                "Icelandic", "Irish", "Italian", "Latvian", "Liechtensteiner",
+                "Lithuanian", "Luxembourgish", "Maltese", "Norwegian", "Polish",
+                "Portuguese", "Romanian", "Slovak", "Slovenian", "Spanish", "Swedish", "Albanian", "Andorran", "Belarusian", "Bosnian", "Herzegovinian",
+                "Georgian", "Kosovar", "Moldovan", "Monegasque", "Montenegrin",
+                "Macedonian", "Sammarinese", "Serbian", "Swiss", "Ukrainian", "British",
+                "Vatican citizen")
     }
 }
 
@@ -140,7 +168,7 @@ class DurationPreMaster: Intent() {
 }
 class BackgroundPreMaster: Intent() {
     override fun getExamples(lang: Language): List<String> {
-        return listOf("Duration")
+        return listOf("background")
     }
 }
 
@@ -149,4 +177,28 @@ class PurposePreMaster: Intent() {
         return listOf("Purpose")
     }
 }
+
+class AskAboutPreMaster: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("pre-master")
+    }
+}
+
+class Name: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+                "I am",
+                "I'm",
+                "My name is",
+                "Call me",
+                "You can call me",
+                "They call me",
+                "I go by",
+                "It's",
+                "This is",
+                "My friends call me"
+        )
+    }
+}
+
 
