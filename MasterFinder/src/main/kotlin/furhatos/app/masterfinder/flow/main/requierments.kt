@@ -7,7 +7,7 @@ import furhatos.records.User
 val Requierements: State = state(Parent) {
 
     onEntry {
-        furhat.ask("To apply for the master's program, you need a relevant bachelor's degree, a sufficient GPA, and English proficiency. Do you believe you meet these requirements?")
+        furhat.ask("To apply for a master's program, you need a relevant bachelor's degree, a sufficient GPA, and English proficiency. Do you believe you meet these requirements ${UserData.userName}?")
     }
 
     onResponse<YesAnswer> {
@@ -82,7 +82,7 @@ val WantToKnowMore: State = state(Parent) {
 val Nationality: State = state(Parent) {
     onEntry {
         furhat.say("I have to know your nationality to give information about the application process")
-        furhat.ask("Can I ask? Are you a Dutch citizen, a citizen of another European country, or a non-European citizen?")
+        furhat.ask("Can I ask ${UserData.userName}? Are you a Dutch citizen, a citizen of another European country, or a non-European citizen?")
     }
 
     onResponse<Dutch> {

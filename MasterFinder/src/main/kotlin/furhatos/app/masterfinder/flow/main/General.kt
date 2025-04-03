@@ -34,7 +34,6 @@ val General: State = state {
     }
 
     onResponse<NoAnswer> {
-        furhat.say("Okay, happy to have been of assistance")
         goto(Idle)
     }
 

@@ -156,7 +156,7 @@ val MasterInformation: State = state(Parent){
 
     onEntry {
         if (master != null) {
-            furhat.ask("Would you like to know about the admission requirements, career opportunities, faculty, duration or the study structure for${master.name}?")
+            furhat.ask("Would you like to know about the admission requirements, career opportunities, faculty, duration or the study structure for ${master.name}?")
         }
     }
 

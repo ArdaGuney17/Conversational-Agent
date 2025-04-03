@@ -8,6 +8,7 @@ import furhatos.flow.kotlin.state
 import furhatos.nlu.Intent
 import furhatos.nlu.common.No
 import furhatos.nlu.common.Yes
+import furhatos.records.User
 import furhatos.util.Language
 
 class NoBachelor: Intent() {
@@ -179,6 +180,7 @@ val BachelorSelection: State = state(Parent) {
     }
 
     onResponse<NoBachelor> {
+        furhat.say("Don't worry if you do not have a bachelor degree yet, there is still plenty of time!")
         goto(EnrolledAsBachelor) // Transition to the next state
     }
 
@@ -186,6 +188,8 @@ val BachelorSelection: State = state(Parent) {
         val userInput = it.text // Get the user's response as a String
         val bachelorsIntent = Bachelors()
         bachelorsIntent.processUserInput(userInput) // Call the method to process and save the study program
+
+        furhat.say("You study ${UserData.userStudyProgram}, how interesting!")
 
         goto(MasterDirection)
     }
@@ -201,7 +205,7 @@ val EnrolledAsBachelor: State = state {
         goto(TellsAboutBachelor)
     }
     onResponse<No> {
-        furhat.say("I can only help you to find a master study. Information about bachelor studies are available on the UT website.")
+        furhat.say("I am sorry, I can only help you to find a master study. Information about bachelor studies are available on the UT website.")
         goto(General)
     }
 }
@@ -236,15 +240,14 @@ val MasterDirection: State = state {
 
 val TellsAboutInterests: State = state {
     onEntry {
-        println("In TellsAboutInterests") // Debug log
         furhat.ask("Can you tell me more about your interests?")
     }
     onResponse<Interests> {
-        println("User input classified as: ${it.intent}")
         val userInterest = it.text // Get the user's response as a String
         val interests = Interests()
         interests.processUserInterest(userInterest) // Call the method to process and save the study program
         println("User has interest in: ${UserData.userInterests}")
+        furhat.say("I get why you are interested in ${UserData.userInterests}, I like it as well")
         goto(GroundingInterest)
     }
 }
@@ -252,7 +255,7 @@ val TellsAboutInterests: State = state {
 val GroundingInterest: State = state {
     onEntry {
         val interest = UserData.userInterests
-        furhat.say("Okay, I can tell you more about $interest")
+        furhat.say("I can tell you more about $interest")
         goto(InterestBasedMasterSelection)
     }
 }
