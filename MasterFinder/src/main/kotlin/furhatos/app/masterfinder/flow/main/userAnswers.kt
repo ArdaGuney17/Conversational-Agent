@@ -5,7 +5,7 @@ import furhatos.util.Language
 
 class AskAboutMasters: Intent() {
     override fun getExamples(lang: Language): List<String> {
-        return listOf("Tell me about master's programs", "I want to know about the Master programs", "What Master programs are available?", "I want help choosing a Masters")
+        return listOf("Tell me about master's programs", "I want to know about the Master programs", "What Master programs are available?", "I want help choosing a Masters", "Master", "Masters")
     }
 }
 
@@ -17,13 +17,7 @@ class AskAboutBachelors: Intent() {
 
 class AskAboutRequirements: Intent() {
     override fun getExamples(lang: Language): List<String> {
-        return listOf("I want to know the requirements of a masters", "I want to know about a pre master", "I would like information about the requirements of a Master")
-    }
-}
-
-class AdmissionRequest : Intent(){
-    override fun getExamples(lang: Language): List<String> {
-        return listOf("The admission", "The admission requirements", "I would like to know more about the admission requirements")
+        return listOf("I want to know the requirements of a masters", "I want to know about a pre master", "I would like information about the requirements of a Master", "Requirements", "Admission", "admission requirements")
     }
 }
 class CareerRequest : Intent() {
@@ -34,7 +28,9 @@ class CareerRequest : Intent() {
                 "What job opportunities are there after graduation?",
                 "What kind of careers can I pursue?",
                 "Tell me about the career options",
-                "What can I do after completing this program?"
+                "What can I do after completing this program?",
+                "career",
+                "career opportunities"
         )
     }
 }

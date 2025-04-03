@@ -160,7 +160,7 @@ val MasterInformation: State = state(Parent){
         }
     }
 
-    onResponse<AdmissionRequest> {
+    onResponse<AskAboutRequirements> {
         if (master != null) {
             furhat.say("For ${master.name}, the admission requirements include: ${master.admission}.")
         }
