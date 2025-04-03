@@ -10,11 +10,11 @@ val Requierements: State = state(Parent) {
         furhat.ask("To apply for the master's program, you need a relevant bachelor's degree, a sufficient GPA, and English proficiency. Do you believe you meet these requirements?")
     }
 
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         goto(Nationality)
     }
 
-    onResponse<No> {
+    onResponse<NoAnswer> {
         goto(NotSuited)
     }
 
@@ -26,11 +26,11 @@ val NotSuited: State = state(Parent) {
         furhat.ask("Do you want more information about a pre-master for" + UserData.userOptionalMaster +"?")
     }
 
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         goto(WhatKindOfInfo)
     }
 
-    onResponse<No> {
+    onResponse<NoAnswer> {
         goto(General)
     }
 
@@ -68,11 +68,11 @@ val WantToKnowMore: State = state(Parent) {
         furhat.ask("Do you want to know other information about the pre-master?")
     }
 
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         goto(WhatKindOfInfo)
     }
 
-    onResponse<No> {
+    onResponse<NoAnswer> {
         furhat.say("Okay")
         goto(Nationality)
     }

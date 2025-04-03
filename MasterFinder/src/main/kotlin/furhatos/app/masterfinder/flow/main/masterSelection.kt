@@ -45,7 +45,7 @@ val MasterSelection: State = state(Parent) {
         }
     }
 
-    onResponse<No> {
+    onResponse<NoAnswer> {
         furhat.say("Alright, let me know if you need any other assistance.")
         goto(Parent)
     }
@@ -87,11 +87,11 @@ val KnowMoreAboutMaster: State = state {
         furhat.ask("Would you like more information about any of these masters?")
     }
 
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         goto(ChoiceMastersFromBachelor)
     }
 
-    onResponse<No> {
+    onResponse<NoAnswer> {
         goto(General)
     }
 }
@@ -195,7 +195,7 @@ val MasterInformation: State = state(Parent){
         goto(OtherInformation)
     }
 
-    onResponse<No> {
+    onResponse<NoAnswer> {
         furhat.say("Alright, let me know if you have any other questions!")
         goto(Parent)
     }
@@ -206,11 +206,11 @@ val OtherInformation: State = state {
         furhat.ask("Would you like other information about this masters?")
     }
 
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         goto(MasterInformation)
     }
 
-    onResponse<No> {
+    onResponse<NoAnswer> {
         goto(ContinueOrEnd)
     }
 }
@@ -220,11 +220,11 @@ val ContinueOrEnd: State = state {
         furhat.ask("Would you like information about an other masters program?")
     }
 
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         goto(MasterSelection)
     }
 
-    onResponse<No> {
+    onResponse<NoAnswer> {
         goto(General)
     }
 }

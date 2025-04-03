@@ -197,7 +197,7 @@ val EnrolledAsBachelor: State = state {
         furhat.ask("Are you enrolled as a bachelor student?")
     }
 
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         goto(TellsAboutBachelor)
     }
     onResponse<No> {
@@ -207,7 +207,7 @@ val EnrolledAsBachelor: State = state {
 }
 
 val WhatIsBachelor: State = state {
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         goto(TellsAboutBachelor)
     }
     onResponse<No> {
@@ -233,7 +233,7 @@ val MasterDirection: State = state {
     onEntry {
         furhat.ask("Do you want to go in the same direction in your masters?")
     }
-    onResponse<Yes> {
+    onResponse<YesAnswer> {
         furhat.say("Great!")
         goto(MasterFromBachelor)
     }
