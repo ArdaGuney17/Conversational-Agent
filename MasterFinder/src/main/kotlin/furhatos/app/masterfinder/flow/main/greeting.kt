@@ -54,7 +54,7 @@ val Greeting2: State = state(Parent) {
 // New state to ask about preferences
 val AskIfSomethingInMind: State = state(Parent) {
     onEntry {
-        furhat.ask("Do you already have something in mind" + UserData.userName + "?")
+        furhat.ask("Do you already have something in mind " + UserData.userName + "?")
     }
 
     onResponse<YesAnswer> {

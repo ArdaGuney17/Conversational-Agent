@@ -54,7 +54,9 @@ class FacultyRequest : Intent() {
                 "What faculty is this master's program part of?",
                 "Tell me about the faculty for this program",
                 "Who teaches this program?",
-                "Which department is responsible for this master's?"
+                "Which department is responsible for this master's?",
+                "Faculty",
+                "facultu"
         )
     }
 }
@@ -66,7 +68,9 @@ class DurationRequest : Intent() {
                 "What is the duration of this master's?",
                 "How many years does it take to complete?",
                 "How long will it take to finish the program?",
-                "What is the standard length of the master's program?"
+                "What is the standard length of the master's program?",
+                "Duration",
+                "duration"
         )
     }
 }
@@ -123,7 +127,7 @@ class MasterCourses: Intent() {
 
 class Dutch: Intent() {
     override fun getExamples(lang: Language): List<String> {
-        return listOf("Dutch", "I am Dutch", "I am from the Netherlands", "I am a Dutch citizen")
+        return listOf("Dutch", "I am Dutch", "I am from the Netherlands", "I am a Dutch citizen", "Netherlands")
     }
 }
 
@@ -145,13 +149,13 @@ class European: Intent() {
                 "Portuguese", "Romanian", "Slovak", "Slovenian", "Spanish", "Swedish", "Albanian", "Andorran", "Belarusian", "Bosnian", "Herzegovinian",
                 "Georgian", "Kosovar", "Moldovan", "Monegasque", "Montenegrin",
                 "Macedonian", "Sammarinese", "Serbian", "Swiss", "Ukrainian", "British",
-                "Vatican citizen")
+                "Vatican citizen", "Europe", "European")
     }
 }
 
 class OutsideEurope: Intent() {
     override fun getExamples(lang: Language): List<String> {
-        return listOf("I am not from another European country", "I am not European", "I am not from Europe", "I come from outside of Europe")
+        return listOf("I am not from another European country", "I am not European", "I am not from Europe", "I come from outside of Europe", "Non-european")
     }
 }
 
