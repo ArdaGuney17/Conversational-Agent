@@ -11,6 +11,7 @@ val Requierements: State = state(Parent) {
     }
 
     onResponse<YesAnswer> {
+        furhat.say("That's good! Then you can immediately apply for ${UserData.userOptionalMaster}")
         goto(Nationality)
     }
 
